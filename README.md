@@ -13,8 +13,11 @@ In order to run this solution properly you will need to install Airflow, and con
 2) Install Airflow Python Package (ideally in an environment)
 
     >pip3 install apache-airflow
+   
     >pip3 install typing_extensions
+    
     >pip3 install 'apache-airflow[postgres]'
+    
     >pip3 install apache-airflow-providers-amazon
     
 3) [OPTIONAL] Edit airflow.cfg line 111 so airflow doesn’t load the examples:
