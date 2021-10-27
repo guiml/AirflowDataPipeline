@@ -44,11 +44,13 @@ In order to run this solution properly you will need to install Airflow, and con
 
 
 * **Redshift setup:**
+
 1) Initiate a new Redshift cluster
 2) Release public acces to the cluster by clickin in Actions >> Modify publicly accessible setting
 3) Create inbound rules in the security group attached to the VPC for this cluster to enable remote access
 
 * **Create tables in Redshift**
+*
 Using the Redshift Query Editor, run the SQL queries in the Create Tables.sql file
 
 ## Purpose of this database 
