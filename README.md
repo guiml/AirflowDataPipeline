@@ -4,7 +4,7 @@
 
 In order to run this solution properly you will need to install Airflow, and configure an AWS Redshift cluster. 
 
-* **Airflow installation (instructions for MacOS):**
+### Airflow installation (instructions for MacOS):
 
 1) Set up the environment variable for airflow
 
@@ -42,14 +42,43 @@ In order to run this solution properly you will need to install Airflow, and con
     
 8) Open the airflow in the browser by accessing the following address: http://localhost:8080/
 
+### Airflow configuration:
 
-* **Redshift setup:**
+1) Add the following Connections:
+
+    >Conn Id: *aws credentials*
+    >
+    >Conn Type: *Amazon Web Service*
+    >
+    >Login *AWS ACCESS KEY*
+    >
+    >Pwd: *AWS SECRET*
+
+    >Conn Id: *redshift*
+    >
+    >Conn Type: *Postgres*
+    >
+    >Host *[REDSHIFT ENDPOINT]*
+    >
+    >Login: *[DB USER]*
+    >
+    >Password: *[DB PASSWORD]*
+    >
+    >Port:*5439*
+
+2) Add the following Variable:
+
+    >Key: *s3_bucket*
+    >Val: *udac-data-pipelines*
+
+
+### Redshift setup:
 
 1) Initiate a new Redshift cluster
 2) Release public acces to the cluster by clickin in Actions >> Modify publicly accessible setting
 3) Create inbound rules in the security group attached to the VPC for this cluster to enable remote access
 
-* **Create tables in Redshift**
+### Create tables in Redshift
 
 Using the Redshift Query Editor, run the SQL queries in the Create Tables.sql file
 
