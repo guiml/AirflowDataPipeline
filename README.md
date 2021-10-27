@@ -6,24 +6,37 @@ In order to run this solution properly you will need to install Airflow, and con
 
 * Airflow installation (instructions for MacOS):
 1) Set up the environment variable for airflow
-    export AIRFLOW_HOME=~/airflow 
+
+    >export AIRFLOW_HOME=~/airflow 
+    
 2) Install Airflow Python Package (ideally in an environment)
-    pip3 install apache-airflow
-    pip3 install typing_extensions
-    pip3 install 'apache-airflow[postgres]'
-    pip3 install apache-airflow-providers-amazon
+
+    >pip3 install apache-airflow
+    >pip3 install typing_extensions
+    >pip3 install 'apache-airflow[postgres]'
+    >pip3 install apache-airflow-providers-amazon
+    
 3) [OPTIONAL] Edit airflow.cfg line 111 so airflow doesn’t load the examples:
-    load_examples = False
+
+    >load_examples = False
+    
 4) Start Airflow
-    airflow db init
+    
+    >airflow db init
+    
 5) Create initial user (substitute USR, PWD and other information with your choice of Admin user and Password)
-    airflow users  create --role Admin --username USR --email EMAIL --firstname FIRSTNAME --lastname LASTNAME --password PWD
+    
+    >airflow users  create --role Admin --username USR --email EMAIL --firstname FIRSTNAME --lastname LASTNAME --password PWD
+    
 6) Start airflow
-    airflow webserver -p 8080  
+    
+    >airflow webserver -p 8080
+    
 7) Start Airflow scheduler (in another terminal window)
-    Airflow scheduler
-8) Open the airflow in the browser by accessing the following address
-http://localhost:8080/
+    
+    >Airflow scheduler
+    
+8) Open the airflow in the browser by accessing the following address: http://localhost:8080/
 
 
 * Redshift setup:
