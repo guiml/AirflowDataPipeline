@@ -4,7 +4,8 @@
 
 In order to run this solution properly you will need to install Airflow, and configure an AWS Redshift cluster. 
 
-* Airflow installation (instructions for MacOS):
+* **Airflow installation (instructions for MacOS):**
+
 1) Set up the environment variable for airflow
 
     >export AIRFLOW_HOME=~/airflow 
@@ -39,7 +40,7 @@ In order to run this solution properly you will need to install Airflow, and con
 8) Open the airflow in the browser by accessing the following address: http://localhost:8080/
 
 
-* Redshift setup:
+* **Redshift setup:**
 1) Initiate a new Redshift cluster
 2) Release public acces to the cluster by clickin in Actions >> Modify publicly accessible setting
 3) Create inbound rules in the security group attached to the VPC for this cluster to enable remote access
