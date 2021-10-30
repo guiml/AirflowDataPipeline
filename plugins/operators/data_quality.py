@@ -16,17 +16,15 @@ class DataQualityOperator(BaseOperator):
     def __init__(self,
                  table,
                  redshift_conn_id='',
-                 select_sql='',
-                 stagingtables='',
-                 dimtables='',
+                 dq_checks=[],
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
         self.redshift_conn_id = redshift_conn_id
         self.table = table
-        self.stagingtables = stagingtables
-        self.dimtables = dimtables
-        self.select_sql = select_sql
+        self.c = dq_checks
+        self.dq_checks = dq_checks
+
 
     '''
     Execution: 
@@ -36,21 +34,15 @@ class DataQualityOperator(BaseOperator):
     '''
     def execute(self, context):
         redshift_hook = PostgresHook('redshift')
-        stagingtables = self.stagingtables
-        dimtables = self.dimtables
         self.log.info(f'Checking Staging tables...')
-        for t in stagingtables:
-            records=redshift_hook.get_records(f'select count(*) from {t};')
-            if len(records) < 1 or len(records[0]) < 1:
-                raise AssertionError(f'Data quality check failed. {t} returned no results!')
+        for c in self.dq_checks:
+            sql = c["check_sql"]
+            exp = c["expected_result"]
+            records = redshift_hook.get_records(sql)
+            num_records = records[0][0]
+            if num_records != exp:
+                raise ValueError(f"Exception noticed, got: {num_records} while expected: {exp}")
             else:
-                self.log.info(f'Data quality check successful. {t} returned no errors!')
-
-        self.log.info(f'Checking Fact and Dim tables...')
-        for t in dimtables:
-            records=redshift_hook.get_records(f'select count(*) from {t};')
-            if len(records) < 1 or len(records[0]) < 1:
-                raise AssertionError(f'Data quality check failed. {t} returned no results!')
-            else:
-                self.log.info(f'Data quality check successful. {t} returned no errors!')     
+                self.log.info(f"No errors noticed.")
+        
         self.log.info('Quality Check Complete.')
