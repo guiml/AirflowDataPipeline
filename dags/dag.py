@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from operators.stage_redshift import StageToRedshiftOperator
@@ -46,7 +48,7 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     aws_credentials_id='aws_credentials',
     table='staging_songs',
     s3_bucket='udacity-dend',
-    s3_key='song_data',
+    s3_key='song_data/A/A',
     region = 'us-west-2',
     param="FORMAT AS JSON 'auto'" 
 )
@@ -95,13 +97,17 @@ run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     redshift_conn_id='redshift',
     table='all',
-    stagingtables=['staging_events','staging_songs'],
-    dimtables=['artists', 'songplays', 'songs', 'time', 'users'],
+    dq_checks=[
+        {'check_sql': "SELECT COUNT(*) FROM users WHERE userid is null", 'expected_result': 0},
+        {'check_sql': "SELECT COUNT(*) FROM songs WHERE songid is null", 'expected_result': 0},
+        {'check_sql': "SELECT COUNT(*) FROM artists WHERE artistid is null", 'expected_result': 0},
+        {'check_sql': "SELECT COUNT(*) FROM songplays WHERE songplay_id is null", 'expected_result': 0},
+        {'check_sql': "SELECT COUNT(*) FROM time WHERE start_time is null", 'expected_result': 0}
+    ],
     dag=dag
 )
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
-
 
 start_operator >> stage_events_to_redshift
 start_operator >> stage_songs_to_redshift
